@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { ChevronDown, ChevronUp, Edit2 } from "lucide-react";
 import DetailKontrakModal from "./DetailKontrakModal";
+import { useAuth } from "@/hooks/useAuth";
 
 export interface ReturnItem {
   application_no: string;
@@ -22,6 +23,8 @@ export interface ReturnItem {
 }
 
 export default function ApprovalReturn() {
+  const { user, loading: authLoading } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
   const [returnData, setReturnData] = useState<ReturnItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortColumn, setSortColumn] = useState<keyof ReturnItem | null>(null);
@@ -30,17 +33,17 @@ export default function ApprovalReturn() {
   const [selectedContractNo, setSelectedContractNo] = useState<string | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // New state variables for pagination
+  //state variables for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
 
   const fetchData = useCallback(async () => {
+    if(!user) return;
     setIsLoading(true);
-    setError(null);
+    
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_APPROVAL_RETURN_API_URL}/getApprovalReturn`,
@@ -53,25 +56,12 @@ export default function ApprovalReturn() {
       );
       setReturnData(response.data.data);
     } catch (error) {
-      console.error("Error fetching data:", error);
       setError("Failed to fetch data. Please try again later.");
+      console.error("Error fetching data:", error);
     } finally {
       setIsLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const handleSort = (column: keyof ReturnItem) => {
-    if (sortColumn === column) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortColumn(column);
-      setSortDirection("asc");
-    }
-  };
+  }, [user]);
 
   const sortedData = [...returnData].sort((a, b) => {
     if (sortColumn) {
@@ -89,6 +79,40 @@ export default function ApprovalReturn() {
     )
   );
 
+  useEffect(() => {
+    if(authLoading) return;
+
+    if (!user) {
+      window.location.href = '/unauthorized';
+      return;
+    }
+    
+    fetchData();
+  }, [user, authLoading]);
+
+  const LoadingSpinner = () => (
+    <div className="flex justify-center items-center h-screen">
+    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+  )
+
+  useEffect(() => {
+    setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+  }, [filteredData, itemsPerPage]); 
+
+  if (!user) return null;
+
+  const handleSort = (column: keyof ReturnItem) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+  };
+
+
+
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -104,16 +128,8 @@ export default function ApprovalReturn() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  useEffect(() => {
-    setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-  }, [filteredData, itemsPerPage]);
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
+  if ( authLoading|| isLoading) {
+    return <LoadingSpinner/>
   }
 
   if (error) {
