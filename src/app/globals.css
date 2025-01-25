@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap');
+
+:root {
+  --primary-blue: #204A7E;
+  --accent-gold: #F7AD00;
+  --icon-blue: #1291ec;
+  --text-gray: #495057;
+  --hover-blue: #aad9ec;
+}
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  color: var(--text-gray);
+}
+
+
 .custom-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: #94a3b8 #e2e8f0;

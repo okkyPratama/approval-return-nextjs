@@ -110,9 +110,7 @@ export default function ApprovalReturn() {
       setSortDirection("asc");
     }
   };
-
-
-
+  
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -262,7 +260,7 @@ export default function ApprovalReturn() {
                     currentItems.map((item, index) => (
                       <tr
                         key={index}
-                        className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
+                        className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} transition-colors duration-200 hover:bg-blue-100 cursor-pointer`}
                       >
                         <td className="px-4 py-2">{item.application_no}</td>
                         <td className="px-4 py-2">
