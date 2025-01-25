@@ -41,9 +41,9 @@ export default function ApprovalReturn() {
   const [totalPages, setTotalPages] = useState(1);
 
   const fetchData = useCallback(async () => {
-    if(!user) return;
+    if (!user) return;
     setIsLoading(true);
-    
+
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_APPROVAL_RETURN_API_URL}/getApprovalReturn`,
@@ -80,25 +80,25 @@ export default function ApprovalReturn() {
   );
 
   useEffect(() => {
-    if(authLoading) return;
+    if (authLoading) return;
 
     if (!user) {
-      window.location.href = '/unauthorized';
+      window.location.href = "/unauthorized";
       return;
     }
-    
+
     fetchData();
   }, [user, authLoading]);
 
   const LoadingSpinner = () => (
     <div className="flex justify-center items-center h-screen">
-    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-  </div>
-  )
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  );
 
   useEffect(() => {
     setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-  }, [filteredData, itemsPerPage]); 
+  }, [filteredData, itemsPerPage]);
 
   if (!user) return null;
 
@@ -110,7 +110,7 @@ export default function ApprovalReturn() {
       setSortDirection("asc");
     }
   };
-  
+
   const handleItemsPerPageChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -126,8 +126,8 @@ export default function ApprovalReturn() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  if ( authLoading|| isLoading) {
-    return <LoadingSpinner/>
+  if (authLoading || isLoading) {
+    return <LoadingSpinner />;
   }
 
   if (error) {
@@ -147,11 +147,15 @@ export default function ApprovalReturn() {
   return (
     <>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold my-2">RETURN PROCESS</h1>
+        <h1 className="text-2xl font-medium border-b-[5px] border-[var(--primary-blue)] pb-2 mb-4">
+          RETURN PROCESS
+        </h1>
         <div className="bg-white shadow rounded-lg overflow-hidden">
-          <div className="bg-[#204A7E] p-4 border-b-4 border-[#F7AD00]">
-            <h2 className="text-2xl font-bold text-white">TO DO LIST</h2>
-          </div>
+            <h2 className="text-2xl font-bold">
+              <span className="inline-block border-b-[3px] border-[#F7AD00] pb-2">
+                TO DO LIST
+              </span>
+            </h2>
           <div className="p-4">
             <div className="flex justify-between mb-4">
               <div className="flex items-center">
@@ -179,9 +183,9 @@ export default function ApprovalReturn() {
               </div>
             </div>
             <div className="overflow-x-auto">
-              <table className="min-w-full">
+              <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-100">
+                  <tr className="border-b uppercase">
                     <th
                       className="px-4 py-2 text-left cursor-pointer"
                       onClick={() => handleSort("application_no")}
@@ -255,12 +259,12 @@ export default function ApprovalReturn() {
                     <th className="px-4 py-2 text-left">Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="uppercase">
                   {currentItems.length > 0 ? (
                     currentItems.map((item, index) => (
                       <tr
                         key={index}
-                        className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} transition-colors duration-200 hover:bg-blue-100 cursor-pointer`}
+                        className="border-b hover:bg-[var(--hover-blue)]"
                       >
                         <td className="px-4 py-2">{item.application_no}</td>
                         <td className="px-4 py-2">
@@ -285,7 +289,7 @@ export default function ApprovalReturn() {
                           {item.return_request_process}
                         </td>
                         <td className="px-4 py-2">
-                          <button className="text-blue-500">
+                          <button className="text-[var(--icon-blue)] hover:text-[var(--accent-gold)]">
                             <Edit2
                               className="w-4 h-4"
                               onClick={() => {
@@ -322,7 +326,7 @@ export default function ApprovalReturn() {
                   className={`px-3 py-1 border rounded mr-1 ${
                     currentPage === 1
                       ? "bg-gray-100 cursor-not-allowed"
-                      : "bg-blue-500 text-white"
+                      : "bg-[var(--primary-blue)] text-white"
                   }`}
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}

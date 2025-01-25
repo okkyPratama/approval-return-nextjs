@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
-import { X, CheckCircle } from 'lucide-react';
+import { useEffect, useState, useCallback } from "react";
+import axios from "axios";
+import { X, CheckCircle } from "lucide-react";
 
 interface DetailKontrakProps {
   isOpen: boolean;
   contractNo: string;
   onClose: () => void;
-  onSuccessfulAction: () => void; 
+  onSuccessfulAction: () => void;
 }
 
 interface DetailContractData {
@@ -31,16 +31,18 @@ export default function DetailKontrakModal({
   isOpen,
   onClose,
   contractNo,
-  onSuccessfulAction, 
+  onSuccessfulAction,
 }: DetailKontrakProps) {
   const [detailData, setDetailData] = useState<DetailContractData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationAction, setConfirmationAction] = useState<'reject' | 'confirm' | null>(null);
+  const [confirmationAction, setConfirmationAction] = useState<
+    "reject" | "confirm" | null
+  >(null);
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     if (isOpen && contractNo) {
@@ -76,7 +78,7 @@ export default function DetailKontrakModal({
     }
   };
 
-  const handleActionClick = (action: 'reject' | 'confirm') => {
+  const handleActionClick = (action: "reject" | "confirm") => {
     setConfirmationAction(action);
     setShowConfirmation(true);
   };
@@ -84,14 +86,14 @@ export default function DetailKontrakModal({
   const handleConfirmAction = async () => {
     try {
       let response;
-      if (confirmationAction === 'confirm') {
+      if (confirmationAction === "confirm") {
         console.log("Confirming contract with contract_no:", contractNo);
         response = await axios.post(
           `${process.env.NEXT_PUBLIC_APPROVAL_RETURN_API_URL}/confirmApproval`,
           {
             branch_code: "0104",
             nik: "123456",
-            contract_no: contractNo
+            contract_no: contractNo,
           }
         );
         console.log("API response:", response.data);
@@ -101,7 +103,7 @@ export default function DetailKontrakModal({
           `${process.env.NEXT_PUBLIC_APPROVAL_RETURN_API_URL}/rejectApproval`,
           {
             contract_no: contractNo,
-            nik: "123456"
+            nik: "123456",
           }
         );
       }
@@ -109,7 +111,11 @@ export default function DetailKontrakModal({
 
       if (response.status === 200) {
         if (response.data.flagValidasi === 0) {
-          setSuccessMessage(`${confirmationAction === 'confirm' ? 'Approval' : 'Rejection'} successful`);
+          setSuccessMessage(
+            `${
+              confirmationAction === "confirm" ? "Approval" : "Rejection"
+            } successful`
+          );
           setIsSuccess(true);
 
           setTimeout(() => {
@@ -120,18 +126,23 @@ export default function DetailKontrakModal({
           }, 2000);
           await fetchDetailData();
         } else {
-          setSuccessMessage(response.data.message || `Failed to ${confirmationAction} the contract. Please try again.`);
+          setSuccessMessage(
+            response.data.message ||
+              `Failed to ${confirmationAction} the contract. Please try again.`
+          );
           setIsSuccess(false);
         }
       } else {
-        throw new Error('Unexpected response status');
+        throw new Error("Unexpected response status");
       }
     } catch (error) {
-      console.error('Error during API call:', error);
-      setSuccessMessage(`Failed to ${confirmationAction} the contract. Please try again.`);
+      console.error("Error during API call:", error);
+      setSuccessMessage(
+        `Failed to ${confirmationAction} the contract. Please try again.`
+      );
       setIsSuccess(false);
     }
-    
+
     // Wait for 2 seconds before hiding the confirmation modal
     setTimeout(() => {
       setShowConfirmation(false);
@@ -145,25 +156,29 @@ export default function DetailKontrakModal({
 
   if (!isOpen) return null;
 
-  return ( 
+  return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh]">
-       
-       <div className="sticky top-0 z-10">
-        <div className="flex justify-between items-center p-6 bg-[#204A7E] border-b-4 border-[#F7AD00]">
-          <h2 className="text-2xl font-bold text-white">DETAIL KONTRAK</h2>
-          <button onClick={onClose} className="text-white hover:text-gray-200">
-            <X size={24} />
-          </button>
+        <div className="sticky top-0 z-10">
+          <div className="relative flex justify-end items-center p-6 border-b-2">
+            <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold text-dark">
+              DETAIL KONTRAK
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-dark hover:text-red-500"
+            >
+              <X size={24} />
+            </button>
+          </div>
         </div>
-       </div>
 
-       <div className='overflow-y-auto max-h-[calc(90vh-88px)] custom-scrollbar'>
-        {isLoading ? (
-          <div className="p-6 text-center">Loading...</div>
-        ) : error ? (
-          <div className="p-6 text-center text-red-500">{error}</div>
-        ) : detailData ? (
+        <div className="overflow-y-auto max-h-[calc(90vh-88px)] custom-scrollbar">
+          {isLoading ? (
+            <div className="p-6 text-center">Loading...</div>
+          ) : error ? (
+            <div className="p-6 text-center text-red-500">{error}</div>
+          ) : detailData ? (
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col">
@@ -190,33 +205,37 @@ export default function DetailKontrakModal({
                 </div>
                 <div className="flex flex-col">
                   <label className="text-sm font-medium text-gray-700 mb-1">
-                  Tanggal Aplikasi:
+                    Tanggal Aplikasi:
                   </label>
                   <input
-                      type="text"
-                      value={
-                        detailData.application_date
-                          ? new Date(detailData.application_date)
-                              .toLocaleString("en-GB", {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: false,
-                              })
-                              .replace(/,/g, "")
-                              .toUpperCase()
-                          : ""
-                      }
-                      disabled
-                      className="form-input rounded-md bg-gray-100 border-gray-300 text-gray-800 p-3"
-                    />
+                    type="text"
+                    value={
+                      detailData.application_date
+                        ? new Date(detailData.application_date)
+                            .toLocaleString("en-GB", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: false,
+                            })
+                            .replace(/,/g, "")
+                            .toUpperCase()
+                        : ""
+                    }
+                    disabled
+                    className="form-input rounded-md bg-gray-100 border-gray-300 text-gray-800 p-3"
+                  />
                 </div>
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-orange-500 mb-2">CUSTOMER</h3>
+                <h3 className="text-lg font-bold pb-2">
+                  <span className="inline-block border-b-[3px] border-[#F7AD00]">
+                    CUSTOMER
+                  </span>
+                </h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col">
                     <label className="text-sm font-medium text-gray-700 mb-1">
@@ -255,7 +274,11 @@ export default function DetailKontrakModal({
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-orange-500 mb-2">OBJEK PEMBIAYAAN</h3>
+                <h3 className="text-lg font-bold pb-2">
+                  <span className="inline-block border-b-[3px] border-[#F7AD00]">
+                  OBJEK PEMBIAYAAN
+                  </span>
+                </h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col">
                     <label className="text-sm font-medium text-gray-700 mb-1">
@@ -305,7 +328,11 @@ export default function DetailKontrakModal({
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-orange-500 mb-2">RTRE</h3>
+                <h3 className="text-lg font-bold pb-2">
+                  <span className="inline-block border-b-[3px] border-[#F7AD00]">
+                    RTRE
+                  </span>
+                </h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col">
                     <label className="text-sm font-medium text-gray-700 mb-1">
@@ -343,25 +370,25 @@ export default function DetailKontrakModal({
                 </div>
               </div>
             </div>
-        ) : (
-          <div className="p-6 text-center">No data available</div>
-        )}
+          ) : (
+            <div className="p-6 text-center">No data available</div>
+          )}
 
-        <div className="flex justify-end space-x-4 p-6 border-t">
-          <button
-            onClick={() => handleActionClick('reject')}
-            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
-          >
-            Reject
-          </button>
-          <button
-            onClick={() => handleActionClick('confirm')}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-          >
-            Confirm
-          </button>
+          <div className="flex justify-end space-x-4 p-6 border-t">
+            <button
+              onClick={() => handleActionClick("reject")}
+              className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+            >
+              Reject
+            </button>
+            <button
+              onClick={() => handleActionClick("confirm")}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+            >
+              Confirm
+            </button>
+          </div>
         </div>
-       </div>
       </div>
 
       {showConfirmation && (
@@ -374,12 +401,15 @@ export default function DetailKontrakModal({
                 ) : (
                   <X className="w-16 h-16 text-red-500 mb-4" />
                 )}
-                <p className="text-lg font-semibold text-center">{successMessage}</p>
+                <p className="text-lg font-semibold text-center">
+                  {successMessage}
+                </p>
               </div>
             ) : (
               <>
                 <h3 className="text-lg font-semibold mb-4">
-                  {confirmationAction === 'reject' ? 'Reject' : 'Confirm'} Action
+                  {confirmationAction === "reject" ? "Reject" : "Confirm"}{" "}
+                  Action
                 </h3>
                 <p className="mb-6">
                   Are you sure you want to {confirmationAction} this contract?
@@ -394,10 +424,12 @@ export default function DetailKontrakModal({
                   <button
                     onClick={handleConfirmAction}
                     className={`px-4 py-2 text-white rounded-md transition-colors ${
-                      confirmationAction === 'reject' ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'
+                      confirmationAction === "reject"
+                        ? "bg-red-500 hover:bg-red-600"
+                        : "bg-blue-500 hover:bg-blue-600"
                     }`}
                   >
-                    {confirmationAction === 'reject' ? 'Reject' : 'Confirm'}
+                    {confirmationAction === "reject" ? "Reject" : "Confirm"}
                   </button>
                 </div>
               </>
@@ -406,5 +438,5 @@ export default function DetailKontrakModal({
         </div>
       )}
     </div>
-    );
+  );
 }
