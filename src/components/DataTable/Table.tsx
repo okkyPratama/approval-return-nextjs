@@ -30,7 +30,7 @@ interface TableProps {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b uppercase">
+            <tr className="border-b">
               {columns.map((column) => (
                 <SortableHeader
                   key={column.key}

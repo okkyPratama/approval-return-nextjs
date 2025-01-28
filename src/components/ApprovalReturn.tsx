@@ -89,8 +89,8 @@ export default function ApprovalReturn() {
         </h1>
         <div className="bg-white shadow rounded-lg overflow-hidden">
             <h2 className="text-2xl font-bold">
-              <span className="inline-block border-b-[3px] border-[#F7AD00] pb-2">
-                TO DO LIST
+              <span className="ml-4 inline-block border-b-[3px] border-[#F7AD00] pb-2">
+                To Do List
               </span>
             </h2>
           <div className="p-4">

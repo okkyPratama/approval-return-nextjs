@@ -7,7 +7,6 @@ import { useDetailContract } from "@/hooks/useDetailContract";
 import { useModal } from "@/hooks/useModal";
 import { FormField } from "./Form/FormField";
 import { formatDate } from "@/helper/date";
-import { FormSection } from "./Form/FormSection";
 import { ConfirmationPopup } from "./util/ConfirmationPopup";
 
 export default function DetailKontrakModal({
@@ -30,7 +29,6 @@ export default function DetailKontrakModal({
 
   useEffect(() => {
     if (isOpen && contractNo) {
-      console.log("Fetching data for contract number:", contractNo);
       fetchDetailData();
     }
   }, [isOpen, contractNo,fetchDetailData]);
@@ -40,11 +38,10 @@ export default function DetailKontrakModal({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh]">
-        {/* Header */}
         <div className="sticky top-0 z-10">
-          <div className="relative flex justify-end items-center p-6 border-b-2">
-            <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold text-dark">
-              DETAIL KONTRAK
+          <div className="relative flex justify-between items-center p-6 border-b-2">
+            <h2 className="text-2xl font-bold text-dark">
+              DETAIL CONTRACT
             </h2>
             <button
               onClick={onClose}
@@ -55,61 +52,46 @@ export default function DetailKontrakModal({
           </div>
         </div>
 
-        {/* Content */}
         <div className="overflow-y-auto max-h-[calc(90vh-88px)] custom-scrollbar">
           {isLoading ? (
             <div className="p-6 text-center">Loading...</div>
           ) : error ? (
             <div className="p-6 text-center text-red-500">{error}</div>
           ) : detailData ? (
-            <div className="p-6 space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-              <FormField label="No. Aplikasi" value={detailData.application_no} />
-                <FormField label="No. Kontrak" value={detailData.contract_no} />
+            <div className="p-8 space-y-4">
+              <FormField label="No. Aplikasi:" value={detailData.application_no} />
+                <FormField label="No. Kontrak:" value={detailData.contract_no} />
                 <FormField 
-                  label="Tanggal Aplikasi" 
-                  value={formatDate(detailData.application_date)} 
+                  label="Tanggal Aplikasi:" 
+                  value={formatDate(detailData.application_date)}
+                  isBold 
                 />
-              </div>
-
-              {/* Customer Section */}
-              <FormSection title="CUSTOMER">
-                <FormField label="Nama Customer" value={detailData.customer_name} />
-                <FormField label="Tipe Nasabah" value={detailData.customer_type} />
+                <FormField label="Nama Customer:" value={detailData.customer_name} />
                 <FormField 
                   label="Alamat" 
                   value={detailData.customer_address} 
                   fullWidth 
                   multiline 
                 />
-              </FormSection>
-
-               {/* Objek Pembiayaan */}
-              <FormSection title="OBJEK PEMBIAYAAN">
-                <FormField label="Model Objek" value={detailData.model_desc} />
-                <FormField label="Merk Objek" value={detailData.brand_desc} />
-                <FormField label="Nama Dealer" value={detailData.supplier_desc} />
-                <FormField label="Outlet" value={detailData.outlet_desc} />
-              </FormSection>
-
-               {/* RTRE */}
-              <FormSection title="RTRE">
+                <FormField label="Tipe Nasabah:" value={detailData.customer_type} />
+                <FormField label="Outlet:" value={detailData.outlet_desc} isBold />
+                <FormField label="Nama Dealer:" value={detailData.supplier_desc} />
+                <FormField label="Merk Objek:" value={detailData.brand_desc} />
+                <FormField label="Model Objek:" value={detailData.model_desc} />
                 <FormField 
-                  label="Return Request Process" 
-                  value={detailData.return_request_process} 
+                  label="Request Return:" 
+                  value={detailData.return_request_process}
+                  isBold 
                 />
                 <FormField 
-                  label="Return Request Form" 
-                  value={detailData.return_request_form} 
-                />
-                <FormField 
-                  label="Reason" 
+                  label="Reason:" 
                   value={detailData.return_request_reason} 
                   fullWidth 
                   multiline 
                   rows={4}
+                  isBold
                 />
-              </FormSection>
+
             </div>
           ) : (
             <div className="p-6 text-center">No data available</div>

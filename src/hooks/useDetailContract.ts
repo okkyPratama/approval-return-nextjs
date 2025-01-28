@@ -12,6 +12,7 @@ export function useDetailContract(contractNo: string) {
       setError(null);
       try {
         const data = await approvalReturnApi.getDetailContract(contractNo);
+        console.log("Fetching data for contract number:", contractNo);
         setDetailData(data);
       } catch (error) {
         setError("Failed to fetch detail data. Please try again later.");
