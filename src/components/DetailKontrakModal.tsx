@@ -48,7 +48,7 @@ export default function DetailKontrakModal({
             </div>
             <button
               onClick={onClose}
-              className="text-dark hover:text-red-500"
+              className="text-dark hover:text-red-500 mb-6"
             >
               <X size={24} />
             </button>

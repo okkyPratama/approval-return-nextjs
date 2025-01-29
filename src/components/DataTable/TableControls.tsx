@@ -35,10 +35,9 @@ export function TableControls({ itemsPerPage,
             <span className="mr-2">Search:</span>
             <input
               type="text"
-              className="border rounded px-2 py-1"
+              className="border-gray-400 border-b px-2 py-1 outline-none focus:ring-0 focus:border-gray-400"
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Search..."
             />
           </div>
         </div>

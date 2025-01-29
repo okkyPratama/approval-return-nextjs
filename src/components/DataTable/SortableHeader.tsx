@@ -29,12 +29,12 @@ export function SortableHeader<T>({
           sortDirection === "asc" ? (
             <>
             <ArrowUp className="w-4 h-4 ml-1" color="#000000" />
-            {/* <ArrowDown className="w-4 h-4 ml-1" color="#D3D3D3" /> */}
+            <ArrowDown className="w-4 h-4 ml-1" color="#D3D3D3" />
             </>
           ) : (
             <>
             <ArrowDown className="w-4 h-4 ml-1" color="#000000" />
-            {/* <ArrowUp className="w-4 h-4 ml-1" color="#D3D3D3" /> */}
+            <ArrowUp className="w-4 h-4 ml-1" color="#D3D3D3" />
             </>
           )
         ) : (

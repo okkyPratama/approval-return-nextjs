@@ -49,7 +49,7 @@ interface TableProps {
               items.map((item, index) => (
                 <tr
                   key={index}
-                  className="border-b hover:bg-[var(--hover-blue)]"
+                  className="border-b hover:bg-[var(--hover-blue)] text-sm"
                 >
                   <td className="px-4 py-2">{item.application_no}</td>
                   <td className="px-4 py-2">
