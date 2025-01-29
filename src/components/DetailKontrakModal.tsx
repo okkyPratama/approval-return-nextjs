@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect} from "react";
 import { X } from "lucide-react";
 import { DetailKontrakProps } from "@/types/detailContract";
 import { useDetailContract } from "@/hooks/useDetailContract";
@@ -37,12 +37,15 @@ export default function DetailKontrakModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh]">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh]">
         <div className="sticky top-0 z-10">
-          <div className="relative flex justify-between items-center p-6 border-b-2">
-            <h2 className="text-2xl font-bold text-dark">
-              DETAIL CONTRACT
+          <div className="relative flex justify-between items-center p-4">
+            <div className="w-full">
+            <h2 className="text-2xl font-bold text-dark mx-4">
+              Detail Contract
             </h2>
+            <div className="border-b-[3px] border-gray-300 w-full mt-2 mx-4"></div>
+            </div>
             <button
               onClick={onClose}
               className="text-dark hover:text-red-500"
@@ -58,8 +61,8 @@ export default function DetailKontrakModal({
           ) : error ? (
             <div className="p-6 text-center text-red-500">{error}</div>
           ) : detailData ? (
-            <div className="p-8 space-y-4">
-              <FormField label="No. Aplikasi:" value={detailData.application_no} />
+            <div className="px-12 py-2 space-y-4">
+                <FormField label="No. Aplikasi:" value={detailData.application_no} />
                 <FormField label="No. Kontrak:" value={detailData.contract_no} />
                 <FormField 
                   label="Tanggal Aplikasi:" 
@@ -97,7 +100,7 @@ export default function DetailKontrakModal({
             <div className="p-6 text-center">No data available</div>
           )}
 
-          <div className="flex justify-end space-x-4 p-6 border-t">
+          <div className="flex justify-end space-x-4 p-4 border-t">
             <button
               onClick={() => handleActionClick("reject")}
               className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"

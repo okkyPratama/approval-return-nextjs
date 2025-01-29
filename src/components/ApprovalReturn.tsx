@@ -21,7 +21,7 @@ export default function ApprovalReturn() {
   const [error, setError] = useState<string | null>(null);
   const [modalState, setModalState] = useState({
     isOpen: false,
-    contractNo: null as string | null
+    contractNo: null as string | null,
   });
 
   const fetchData = useCallback(async () => {
@@ -50,16 +50,20 @@ export default function ApprovalReturn() {
     fetchData();
   }, [user, authLoading]);
 
-  const filteredData = useMemo(() => 
-    returnData.filter((item) =>
-      Object.values(item).some((value) =>
-        String(value).toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    ), [returnData, searchTerm]
+  const filteredData = useMemo(
+    () =>
+      returnData.filter((item) =>
+        Object.values(item).some((value) =>
+          String(value).toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      ),
+    [returnData, searchTerm]
   );
 
-  const { sortedData, sortColumn, sortDirection, handleSort } = useTableSort(filteredData);
-  const { currentItems, currentPage,totalPages, handlePageChange } = usePagination(sortedData, itemsPerPage);
+  const { sortedData, sortColumn, sortDirection, handleSort } =
+    useTableSort(filteredData);
+  const { currentItems, currentPage, totalPages, handlePageChange } =
+    usePagination(sortedData, itemsPerPage);
 
   const handleModalOpen = (contractNo: string) => {
     setModalState({ isOpen: true, contractNo });
@@ -76,9 +80,7 @@ export default function ApprovalReturn() {
   }
 
   if (error) {
-    return (
-      <ErrorMessage message={error}  />
-    );
+    return <ErrorMessage message={error} />;
   }
 
   return (
@@ -88,44 +90,45 @@ export default function ApprovalReturn() {
           RETURN PROCESS
         </h1>
         <div className="bg-white shadow rounded-lg overflow-hidden">
-            <h2 className="text-2xl font-bold">
-              <span className="ml-4 inline-block border-b-[3px] border-[#F7AD00] pb-2">
-                To Do List
-              </span>
-            </h2>
+          <h2 className="text-2xl font-bold relative">
+            <div className=" ml-4 border-b-[3px] border-gray-300 w-full absolute bottom-0"></div>
+            <span className="ml-4 relative inline-block pb-2">
+              <span>To Do List</span>
+              <div className=" absolute bottom-0 left-0 border-b-[3px] border-[#F7AD00] w-14"></div>
+            </span>
+          </h2>
           <div className="p-4">
-          <TableControls
-            itemsPerPage={itemsPerPage}
-            onItemsPerPageChange={setItemsPerPage}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-          />
-            
-          <ReturnTable
-            items={currentItems}
-            sortColumn={sortColumn}
-            sortDirection={sortDirection}
-            onSort={handleSort}
-            onActionClick={handleModalOpen}
-          />
-        <TableFooter
-            currentPage={currentPage}
-            totalPages={totalPages}
-            itemsPerPage={itemsPerPage}
-            totalItems={filteredData.length}
-            onPageChange={handlePageChange}
-          />
-          
+            <TableControls
+              itemsPerPage={itemsPerPage}
+              onItemsPerPageChange={setItemsPerPage}
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+            />
+
+            <ReturnTable
+              items={currentItems}
+              sortColumn={sortColumn}
+              sortDirection={sortDirection}
+              onSort={handleSort}
+              onActionClick={handleModalOpen}
+            />
+            <TableFooter
+              currentPage={currentPage}
+              totalPages={totalPages}
+              itemsPerPage={itemsPerPage}
+              totalItems={filteredData.length}
+              onPageChange={handlePageChange}
+            />
           </div>
         </div>
-      {modalState.contractNo && (
-        <DetailKontrakModal
-          isOpen={modalState.isOpen}
-          onClose={handleModalClose}
-          contractNo={modalState.contractNo}
-          onSuccessfulAction={fetchData}
-        />
-      )}
+        {modalState.contractNo && (
+          <DetailKontrakModal
+            isOpen={modalState.isOpen}
+            onClose={handleModalClose}
+            contractNo={modalState.contractNo}
+            onSuccessfulAction={fetchData}
+          />
+        )}
       </div>
     </>
   );

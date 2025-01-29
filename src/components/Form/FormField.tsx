@@ -4,29 +4,31 @@ interface FormFieldProps {
   fullWidth?: boolean;
   multiline?: boolean;
   rows?: number;
-  isBold?: boolean
+  isBold?: boolean;
 }
 
-export function FormField({ 
-  label, 
-  value, 
+export function FormField({
+  label,
+  value,
   fullWidth = false,
   multiline = false,
   rows = 2,
-  isBold = false 
+  isBold = false,
 }: FormFieldProps) {
-  const containerClasses = fullWidth ? "col-span-2" : "";
-  const  textBold = isBold ? "font-bold" : "font-medium";
+  const textBold = isBold ? "font-bold" : "font-medium";
+
   return (
-    <div className={`grid grid-cols-4 gap-2 ${containerClasses}`}>
-      <label className={`text-sm text-gray-700 flex items-center col-span-1 ${textBold}`}>
+    <div className={`grid grid-cols-4 gap-2 items-center w-full`}>
+      <label
+        className={`text-xs text-gray-700 col-span-1 ${textBold} min-w-[120px]`}
+      >
         {label}
       </label>
       {multiline ? (
         <textarea
           value={value}
           disabled
-          className={`form-textarea rounded-md bg-gray-100 border-gray-300 text-gray-800 p-3 resize-none col-span-3`}
+          className="form-textarea rounded-md bg-gray-100 border-gray-300 text-gray-800 p-2 resize-none col-span-3 text-sm"
           rows={rows}
         />
       ) : (
@@ -34,7 +36,7 @@ export function FormField({
           type="text"
           value={value}
           disabled
-          className={`form-input rounded-md bg-gray-100 border-gray-300 text-gray-800 p-3 col-span-3`}
+          className="form-input rounded-md bg-gray-100 border-gray-300 text-gray-800 p-2 col-span-3 text-sm"
         />
       )}
     </div>
