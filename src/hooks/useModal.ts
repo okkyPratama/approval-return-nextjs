@@ -56,10 +56,13 @@ export function useModal(
       }
 
       console.log('✅ API Response:', response.data);
-
       if (response.data.flagValidasi === 0) {
+        const returnType = detailData.return_request_process === 'RFDE' ? 'FDE' : 'RTRE';
+        const actionType = confirmationAction === "confirm" ? "Confirm" : "Reject";
+        
+        console.log(`✅ ${actionType} ${returnType} successful`);
         setSuccessMessage(
-          `${confirmationAction === "confirm" ? "Approval" : "Rejection"} successful`
+          `Data No. Kontrak ${contractNo} Berhasil dilakukan ${actionType} Return ${returnType}`
         );
         setIsSuccess(true);
         setTimeout(() => {
@@ -74,8 +77,11 @@ export function useModal(
       }
     } catch (error) {
       console.error("Error during API call:", error);
+      const returnType = detailData?.return_request_process === 'RFDE' ? 'FDE' : 'RTRE';
+      const actionType = confirmationAction === "confirm" ? "Confirm" : "Reject";
+        
       setSuccessMessage(
-        `Gagal untuk melakukan ${confirmationAction} kontrak. Silahkan hubungi tim IT`
+        `Gagal melakukan ${actionType} Return ${returnType}. Silahkan hubungi tim IT`
       );
       setIsSuccess(false);
     }
