@@ -25,7 +25,7 @@ export default function DetailKontrakModal({
     handleActionClick,
     handleConfirmAction,
     handleCancelAction
-  } = useModal(contractNo, onClose, onSuccessfulAction);
+  } = useModal(contractNo, onClose, onSuccessfulAction,detailData);
 
   useEffect(() => {
     if (isOpen && contractNo) {
@@ -61,7 +61,7 @@ export default function DetailKontrakModal({
           ) : error ? (
             <div className="p-6 text-center text-red-500">{error}</div>
           ) : detailData ? (
-            <div className="px-12 py-2 space-y-4">
+            <div className="px-12 space-y-4">
                 <FormField label="No. Aplikasi:" value={detailData.application_no} />
                 <FormField label="No. Kontrak:" value={detailData.contract_no} />
                 <FormField 
