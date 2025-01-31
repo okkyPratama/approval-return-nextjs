@@ -16,17 +16,33 @@ export function useModal(
   const [confirmationAction, setConfirmationAction] = useState<ActionType>(null);
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const handleActionClick = useCallback((action: ActionType) => {
     console.log('🔵 Action clicked:', action);
+
+    if (!detailData?.return_request_reason) {
+      setSuccessMessage('Reason Return Tidak Boleh Kosong!');
+      setIsSuccess(false);
+      return;
+    }
+
     setConfirmationAction(action);
     setShowConfirmation(true);
-  }, []);
+  }, [detailData]);
 
   const handleConfirmAction = useCallback(async () => {
+    setIsLoading(true);
     try {
       if (!user?.nik) throw new Error('User not authenticated');
       if (!detailData) throw new Error('Contract detail data not available');
+
+      console.log('📝 Current contract details:', {
+        contractNo,
+        return_request_process: detailData.return_request_process,
+        user: { nik: user.nik, branchCode: user.branchCode }
+      });
 
       let response;
       if (confirmationAction === "confirm") {
@@ -43,8 +59,8 @@ export function useModal(
             console.log('🚀 Calling confirmApprovalRTRE endpoint');
             response = await approvalReturnApi.confirmApprovalRTRE({
               branch_code: user.branchCode,
-              nik: user.nik,
               contract_no: contractNo,
+              nik: user.nik
             })
           }
       } else {
@@ -53,6 +69,16 @@ export function useModal(
           contract_no: contractNo,
           nik: user.nik,
         });
+      }
+
+      if (!response.data || Object.keys(response.data).length === 0) {
+        throw new Error('Data Tidak Ditemukan, Silahkan Hubungi IT');
+      }
+
+      if (response.data.status !== true) {
+        const returnType = detailData.return_request_process === 'RFDE' ? 'FDE' : 'RTRE';
+        const actionType = confirmationAction === "confirm" ? "Confirm" : "Reject";
+        throw new Error(`Gagal Melakukan ${actionType} Return ${returnType}, Silahkan Hubungi IT`);
       }
 
       console.log('✅ API Response:', response.data);
@@ -65,38 +91,42 @@ export function useModal(
           `Data No. Kontrak ${contractNo} Berhasil dilakukan ${actionType} Return ${returnType}`
         );
         setIsSuccess(true);
+
+
         setTimeout(() => {
           setShowConfirmation(false);
           setIsSuccess(false);
           onClose();
           onSuccessfulAction();
+          window.location.reload();
         }, 2000);
       } else {
-        console.error('❌ API Error:', response.data.message);
-        throw new Error(response.data.message);
+        console.error('❌ API Validation Error:', response.data.message);
+        setSuccessMessage(response.data.message);
+        setIsSuccess(false);
       }
     } catch (error) {
       console.error("Error during API call:", error);
-      const returnType = detailData?.return_request_process === 'RFDE' ? 'FDE' : 'RTRE';
-      const actionType = confirmationAction === "confirm" ? "Confirm" : "Reject";
-        
-      setSuccessMessage(
-        `Gagal melakukan ${actionType} Return ${returnType}. Silahkan hubungi tim IT`
-      );
+      setSuccessMessage('Terjadi Kesalahan, Silahkan Hubungi IT');
       setIsSuccess(false);
+    } finally {
+      setIsLoading(false)
     }
 
-    setTimeout(() => {
-      setShowConfirmation(false);
-      setIsSuccess(null);
-    }, 2000);
-  }, [confirmationAction, contractNo, user, onClose, onSuccessfulAction]);
+    if (!isSuccess) {
+      setTimeout(() => {
+        setShowConfirmation(false);
+        setIsSuccess(null);
+      }, 2000);
+    }
+  }, [confirmationAction, contractNo, user, onClose, onSuccessfulAction,detailData]);
 
   return {
     showConfirmation,
     confirmationAction,
     isSuccess,
     successMessage,
+    isLoading,
     handleActionClick,
     handleConfirmAction,
     handleCancelAction: () => setShowConfirmation(false)

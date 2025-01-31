@@ -29,10 +29,10 @@ export const approvalReturnApi = {
       
       confirmApprovalRTRE: async (params: {
         branch_code:string;
-        nik: string;
         contract_no: string;
+        nik: string;
       }) => {
-        return axios.post(`${API_BASE_URL}/confirmApprovalRtre`,params);
+        return axios.post(`${API_BASE_URL}/confirmApprovalRTRE`,params);
       },
       rejectApproval: async (params: { 
         contract_no: string; 

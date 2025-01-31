@@ -15,17 +15,17 @@ export default function DetailKontrakModal({
   contractNo,
   onSuccessfulAction,
 }: DetailKontrakProps)  {
-
-  const { detailData, isLoading, error, fetchDetailData } = useDetailContract(contractNo);
+  const { detailData, isLoading: detailLoading, error, fetchDetailData } = useDetailContract(contractNo);
   const { 
     showConfirmation,
     confirmationAction,
     isSuccess,
     successMessage,
+    isLoading, 
     handleActionClick,
     handleConfirmAction,
     handleCancelAction
-  } = useModal(contractNo, onClose, onSuccessfulAction,detailData);
+  } = useModal(contractNo, onClose, onSuccessfulAction, detailData);
 
   useEffect(() => {
     if (isOpen && contractNo) {
@@ -124,6 +124,7 @@ export default function DetailKontrakModal({
         successMessage={successMessage}
         onCancel={handleCancelAction}
         onConfirm={handleConfirmAction}
+        isLoading={isLoading}
       />
     </div>
   );
