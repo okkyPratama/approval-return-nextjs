@@ -44,7 +44,7 @@ export default function DetailKontrakModal({
             <h2 className="text-2xl font-bold text-dark mx-4">
               Detail Contract
             </h2>
-            <div className="border-b-[3px] border-gray-300 w-full mt-2 mx-4"></div>
+            <div className={`border-b-[3px] w-full mt-2 mx-4 ${showConfirmation ? "border-gray-500 opacity-50" : "border-gray-300"}`}></div>
             </div>
             <button
               onClick={onClose}
