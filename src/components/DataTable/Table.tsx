@@ -28,39 +28,45 @@ export function ReturnTable({
   ];
 
   const defaultSortColumn: keyof ApprovalReturnRequest = "application_no";
-
   const [sortedItems, setSortedItems] = useState<ApprovalReturnRequest[]>([]);
+  const [currentSortColumn, setCurrentSortColumn] = useState<keyof ApprovalReturnRequest | null>("application_no");
+  const [currentSortDirection, setCurrentSortDirection] = useState<"asc" | "desc">("asc")
 
   useEffect(() => {
-    const activeSortColumn = sortColumn ?? defaultSortColumn;
-
+    const activeSortColumn = currentSortColumn ?? defaultSortColumn;
+  
     const sortedData = [...items].sort((a, b) => {
       const valueA = a[activeSortColumn] ? String(a[activeSortColumn]).toLowerCase() : "";
       const valueB = b[activeSortColumn] ? String(b[activeSortColumn]).toLowerCase() : "";
-
-      if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
-      if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
+  
+      if (valueA < valueB) return currentSortDirection === "asc" ? -1 : 1;
+      if (valueA > valueB) return currentSortDirection === "asc" ? 1 : -1;
       return 0;
     });
-
+  
     setSortedItems(sortedData);
-  }, [items, sortColumn, sortDirection]);
+  }, [items, currentSortColumn, currentSortDirection]);
+
+  const handleSort = (column: keyof ApprovalReturnRequest) => {
+    setCurrentSortColumn(column);
+    setCurrentSortDirection((prev) => (column === currentSortColumn && prev === "asc" ? "desc" : "asc"));
+  };
 
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
           <tr className="border-b">
-            {columns.map((column) => (
-              <SortableHeader
-                key={column.key}
-                column={column.key}
-                label={column.label}
-                sortColumn={sortColumn}
-                sortDirection={sortDirection}
-                onSort={onSort}
-              />
-            ))}
+          {columns.map((column) => (
+          <SortableHeader
+            key={column.key}
+            column={column.key}
+            label={column.label}
+            sortColumn={currentSortColumn}
+            sortDirection={currentSortDirection}
+            onSort={handleSort}
+          />
+        ))}
             <th className="px-4 py-2 text-left">Action</th>
           </tr>
         </thead>
