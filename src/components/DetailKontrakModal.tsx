@@ -14,24 +14,24 @@ export default function DetailKontrakModal({
   onClose,
   contractNo,
   onSuccessfulAction,
-}: DetailKontrakProps)  {
+  setIsConfirmationLoading,
+}: DetailKontrakProps) {
   const { detailData, isLoading: detailLoading, error, fetchDetailData } = useDetailContract(contractNo);
   const { 
     showConfirmation,
     confirmationAction,
     isSuccess,
     successMessage,
-    isLoading, 
     handleActionClick,
     handleConfirmAction,
     handleCancelAction
-  } = useModal(contractNo, onClose, onSuccessfulAction, detailData);
+  } = useModal(contractNo, onClose, onSuccessfulAction, setIsConfirmationLoading, detailData);
 
   useEffect(() => {
     if (isOpen && contractNo) {
       fetchDetailData();
     }
-  }, [isOpen, contractNo,fetchDetailData]);
+  }, [isOpen, contractNo, fetchDetailData]);
 
   if (!isOpen) return null;
 
@@ -56,7 +56,7 @@ export default function DetailKontrakModal({
         </div>
 
         <div className="overflow-y-auto max-h-[calc(90vh-88px)] custom-scrollbar">
-          {isLoading ? (
+          {detailLoading ? (
             <div className="p-6 text-center">Loading...</div>
           ) : error ? (
             <div className="p-6 text-center text-red-500">{error}</div>
@@ -94,7 +94,6 @@ export default function DetailKontrakModal({
                   rows={4}
                   isBold
                 />
-
             </div>
           ) : (
             <div className="p-6 text-center">No data available</div>
@@ -124,7 +123,6 @@ export default function DetailKontrakModal({
         successMessage={successMessage}
         onCancel={handleCancelAction}
         onConfirm={handleConfirmAction}
-        isLoading={isLoading}
       />
     </div>
   );

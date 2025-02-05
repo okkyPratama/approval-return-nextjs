@@ -16,7 +16,8 @@ export interface DetailContractData {
 
 export interface DetailKontrakProps {
   isOpen: boolean;
-  contractNo: string;
   onClose: () => void;
+  contractNo: string;
   onSuccessfulAction: () => void;
+  setIsConfirmationLoading: (loading: boolean) => void;
 }

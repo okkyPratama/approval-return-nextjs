@@ -15,6 +15,7 @@ import { ErrorMessage } from "./util/ErrorMessage";
 export default function ApprovalReturn() {
   const { user, loading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
+  const [isConfirmationLoading, setIsConfirmationLoading] = useState(false);
   const [returnData, setReturnData] = useState<ApprovalReturnRequest[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -41,12 +42,10 @@ export default function ApprovalReturn() {
 
   useEffect(() => {
     if (authLoading) return;
-
     if (!user) {
       window.location.href = "/unauthorized";
       return;
     }
-
     fetchData();
   }, [user, authLoading]);
 
@@ -60,10 +59,8 @@ export default function ApprovalReturn() {
     [returnData, searchTerm]
   );
 
-  const { sortedData, sortColumn, sortDirection, handleSort } =
-    useTableSort(filteredData);
-  const { currentItems, currentPage, totalPages, handlePageChange } =
-    usePagination(sortedData, itemsPerPage);
+  const { sortedData, sortColumn, sortDirection, handleSort } = useTableSort(filteredData);
+  const { currentItems, currentPage, totalPages, handlePageChange } = usePagination(sortedData, itemsPerPage);
 
   const handleModalOpen = (contractNo: string) => {
     setModalState({ isOpen: true, contractNo });
@@ -85,16 +82,22 @@ export default function ApprovalReturn() {
 
   return (
     <>
+      {isConfirmationLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <LoadingSpinner />
+        </div>
+      )}
+      
       <div className="container mx-auto p-4">
         <h1 className="text-2xl font-medium border-b-[5px] border-[var(--primary-blue)] pb-2 mb-4">
           RETURN PROCESS
         </h1>
         <div className="bg-white shadow rounded-lg overflow-hidden">
           <h2 className="text-2xl font-bold relative">
-            <div className=" ml-4 border-b-[3px] border-gray-300 w-full absolute bottom-0"></div>
+            <div className="ml-4 border-b-[3px] border-gray-300 w-full absolute bottom-0"></div>
             <span className="ml-4 relative inline-block pb-2">
               <span>To Do List</span>
-              <div className=" absolute bottom-0 left-0 border-b-[3px] border-[#F7AD00] w-14"></div>
+              <div className="absolute bottom-0 left-0 border-b-[3px] border-[#F7AD00] w-14"></div>
             </span>
           </h2>
           <div className="p-4">
@@ -127,6 +130,7 @@ export default function ApprovalReturn() {
             onClose={handleModalClose}
             contractNo={modalState.contractNo}
             onSuccessfulAction={fetchData}
+            setIsConfirmationLoading={setIsConfirmationLoading}
           />
         )}
       </div>
