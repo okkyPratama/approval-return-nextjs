@@ -16,7 +16,13 @@ export default function DetailKontrakModal({
   onSuccessfulAction,
   setIsConfirmationLoading,
 }: DetailKontrakProps) {
-  const { detailData, isLoading: detailLoading, error, fetchDetailData } = useDetailContract(contractNo);
+  const { 
+    detailData, 
+    isLoading: detailLoading, 
+    error, 
+    fetchDetailData 
+  } = useDetailContract(contractNo);
+  
   const { 
     showConfirmation,
     confirmationAction,
@@ -24,7 +30,8 @@ export default function DetailKontrakModal({
     successMessage,
     handleActionClick,
     handleConfirmAction,
-    handleCancelAction
+    handleCancelAction,
+    shouldCloseMainModal
   } = useModal(contractNo, onClose, onSuccessfulAction, setIsConfirmationLoading, detailData);
 
   useEffect(() => {
@@ -33,7 +40,7 @@ export default function DetailKontrakModal({
     }
   }, [isOpen, contractNo, fetchDetailData]);
 
-  if (!isOpen) return null;
+  if (!isOpen || (shouldCloseMainModal && !showConfirmation)) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">

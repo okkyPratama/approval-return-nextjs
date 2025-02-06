@@ -17,6 +17,7 @@ export function useModal(
   const [confirmationAction, setConfirmationAction] = useState<ActionType>(null);
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [shouldCloseMainModal, setShouldCloseMainModal] = useState(false);
 
   const handleActionClick = useCallback((action: ActionType) => {
     if (!detailData?.return_request_reason) {
@@ -37,19 +38,19 @@ export function useModal(
 
       let response;
       if (confirmationAction === "confirm") {
-          if(detailData?.return_request_process === 'RFDE') {
-            response = await approvalReturnApi.confirmApproval({
-              branch_code: user.branchCode,
-              nik: user.nik,
-              contract_no: contractNo,
-            });
-          } else {
-            response = await approvalReturnApi.confirmApprovalRTRE({
-              branch_code: user.branchCode,
-              contract_no: contractNo,
-              nik: user.nik
-            });
-          }
+        if(detailData?.return_request_process === 'RFDE') {
+          response = await approvalReturnApi.confirmApproval({
+            branch_code: user.branchCode,
+            nik: user.nik,
+            contract_no: contractNo,
+          });
+        } else {
+          response = await approvalReturnApi.confirmApprovalRTRE({
+            branch_code: user.branchCode,
+            contract_no: contractNo,
+            nik: user.nik
+          });
+        }
       } else {
         response = await approvalReturnApi.rejectApproval({
           contract_no: contractNo,
@@ -75,35 +76,51 @@ export function useModal(
           `Data No. Kontrak ${contractNo} Berhasil dilakukan ${actionType} Return ${returnType}`
         );
         setIsSuccess(true);
+        setShouldCloseMainModal(true);
 
         setTimeout(async () => {
           setShowConfirmation(false);
           setIsSuccess(null);
-          
           await onSuccessfulAction();
-          
-          onClose();
-        }, 1000);
+          onClose(); 
+        }, 1500);
       } else {
         setSuccessMessage(response.data.message);
         setIsSuccess(false);
-        setTimeout(() => {
+        setShouldCloseMainModal(true);
+        
+        setTimeout(async () => {
           setShowConfirmation(false);
           setIsSuccess(null);
-        }, 2000);
+          await onSuccessfulAction();
+          onClose();
+        }, 1500);
       }
     } catch (error) {
       console.error("Error during API call:", error);
       setSuccessMessage('Terjadi Kesalahan, Silahkan Hubungi IT');
       setIsSuccess(false);
-      setTimeout(() => {
+      setShouldCloseMainModal(true);
+      
+      setTimeout(async () => {
         setShowConfirmation(false);
         setIsSuccess(null);
-      }, 2000);
+        await onSuccessfulAction();
+        onClose();
+      }, 1500);
     } finally {
       setIsConfirmationLoading(false);
     }
   }, [confirmationAction, contractNo, user, onClose, onSuccessfulAction, detailData, setIsConfirmationLoading]);
+
+  const handleCancelAction = useCallback(() => {
+    setShowConfirmation(false);
+    setIsSuccess(null);
+    if (shouldCloseMainModal) {
+      onClose();
+      setShouldCloseMainModal(false);
+    }
+  }, [onClose, shouldCloseMainModal]);
 
   return {
     showConfirmation,
@@ -112,9 +129,7 @@ export function useModal(
     successMessage,
     handleActionClick,
     handleConfirmAction,
-    handleCancelAction: () => {
-      setShowConfirmation(false);
-      setIsSuccess(null);
-    }
+    handleCancelAction,
+    shouldCloseMainModal
   };
 }
