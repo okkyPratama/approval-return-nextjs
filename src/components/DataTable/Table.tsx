@@ -23,8 +23,8 @@ export function ReturnTable({
     { key: "application_no" as keyof ApprovalReturnRequest, label: "No. Aplikasi" },
     { key: "application_date" as keyof ApprovalReturnRequest, label: "Tanggal Aplikasi" },
     { key: "customer_name" as keyof ApprovalReturnRequest, label: "Nama Customer" },
-    { key: "return_request_process" as keyof ApprovalReturnRequest, label: "Process" },
-    { key: "return_request_form" as keyof ApprovalReturnRequest, label: "Request Return" },
+    { key: "return_request_form" as keyof ApprovalReturnRequest, label: "Process" },
+    { key: "return_request_process" as keyof ApprovalReturnRequest, label: "Request Return" },
   ];
 
   const defaultSortColumn: keyof ApprovalReturnRequest = "application_no";
@@ -36,14 +36,14 @@ export function ReturnTable({
     const activeSortColumn = currentSortColumn ?? defaultSortColumn;
   
     const sortedData = [...items].sort((a, b) => {
-      const valueA = a[activeSortColumn] ? String(a[activeSortColumn]).toLowerCase() : "";
-      const valueB = b[activeSortColumn] ? String(b[activeSortColumn]).toLowerCase() : "";
+      const valueA = a[activeSortColumn]?.trim().toLowerCase() || "";
+      const valueB = b[activeSortColumn]?.trim().toLowerCase() || "";
   
-      if (valueA < valueB) return currentSortDirection === "asc" ? -1 : 1;
-      if (valueA > valueB) return currentSortDirection === "asc" ? 1 : -1;
-      return 0;
+      return currentSortDirection === "asc"
+      ? valueA.localeCompare(valueB)
+      : valueB.localeCompare(valueA);
     });
-  
+    
     setSortedItems(sortedData);
   }, [items, currentSortColumn, currentSortDirection]);
 
