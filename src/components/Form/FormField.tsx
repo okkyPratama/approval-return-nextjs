@@ -15,30 +15,32 @@ export function FormField({
   rows = 2,
   isBold = false,
 }: FormFieldProps) {
-  const textBold = isBold ? "font-bold" : "font-medium";
+  const textBold = isBold ? "font-semibold" : "font-normal";
 
   return (
-    <div className={`grid grid-cols-4 gap-2 items-center w-full`}>
+    <div className="flex w-full items-start py-0.5">
       <label
-        className={`text-xs text-gray-700 col-span-1 ${textBold} min-w-[120px]`}
+        className={`text-xs text-gray-700 ${textBold} w-[140px] pt-1`}
       >
         {label}
       </label>
-      {multiline ? (
-        <textarea
-          value={value}
-          disabled
-          className="form-textarea rounded-md bg-gray-100 border-gray-300 text-gray-800 p-2 resize-none col-span-3 text-sm"
-          rows={rows}
-        />
-      ) : (
-        <input
-          type="text"
-          value={value}
-          disabled
-          className="form-input rounded-md bg-gray-100 border-gray-300 text-gray-800 p-2 col-span-3 text-sm"
-        />
-      )}
+      <div className="flex-1">
+        {multiline ? (
+          <textarea
+            value={value}
+            disabled
+            className="w-full form-textarea rounded bg-gray-100 border-gray-200 text-gray-800 py-1 px-2 resize-none text-xs min-h-[40px]"
+            rows={rows}
+          />
+        ) : (
+          <input
+            type="text"
+            value={value}
+            disabled
+            className="w-full form-input rounded bg-gray-100 border-gray-200 text-gray-800 py-1 px-2 text-xs h-6"
+          />
+        )}
+      </div>
     </div>
   );
 }
