@@ -81,10 +81,10 @@ export function ReturnTable({
                 <td className="px-4 py-2">{item.return_request_process}</td>
                 <td className="px-4 py-2">
                   <button
-                    className="text-[var(--icon-blue)] hover:text-[var(--accent-gold)]"
+                    className="text-[var(--primary-blue)] hover:text-[var(--accent-gold)]"
                     onClick={() => onActionClick(item.contract_no)}
                   >
-                    <Edit2 className="w-4 h-4" />
+                    <Edit2 className="w-4 h-4" fill="currentColor" strokeWidth={1} />
                   </button>
                 </td>
               </tr>

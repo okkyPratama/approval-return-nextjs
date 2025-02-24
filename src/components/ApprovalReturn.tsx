@@ -11,6 +11,7 @@ import { ReturnTable } from "./DataTable/Table";
 import { TableFooter } from "./DataTable/TableFooter";
 import { LoadingSpinner } from "./util/LoadingSpinner";
 import { ErrorMessage } from "./util/ErrorMessage";
+import { formatDate } from "@/helper/date";
 
 export default function ApprovalReturn() {
   const { user, loading: authLoading } = useAuth();
@@ -52,9 +53,15 @@ export default function ApprovalReturn() {
   const filteredData = useMemo(
     () =>
       returnData.filter((item) =>
-        Object.values(item).some((value) =>
-          String(value).toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        Object.entries(item).some(([key, value]) => {
+          const searchStr = searchTerm.toLowerCase();
+          if (key === 'application_date') {
+            const originalDate = String(value).toLowerCase();
+            const formattedDate = formatDate(String(value)).toLowerCase();
+            return originalDate.includes(searchStr) || formattedDate.includes(searchStr);
+          }
+          return String(value).toLowerCase().includes(searchStr);
+        })
       ),
     [returnData, searchTerm]
   );
