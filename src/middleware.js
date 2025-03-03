@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export async function middleware(request) {
     if (request.nextUrl.pathname === '/unauthorized') {
         return NextResponse.next();
     }

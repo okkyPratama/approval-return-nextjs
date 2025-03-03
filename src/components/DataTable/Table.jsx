@@ -1,16 +1,7 @@
-import { ApprovalReturnRequest } from "@/types/approvalReturn";
 import { SortableHeader } from "./SortableHeader";
 import { Edit2 } from "lucide-react";
 import { formatDate } from "@/helper/date";
 import { useEffect, useState } from "react";
-
-interface TableProps {
-  items: ApprovalReturnRequest[];
-  sortColumn: keyof ApprovalReturnRequest | null;
-  sortDirection: "asc" | "desc";
-  onSort: (column: keyof ApprovalReturnRequest) => void;
-  onActionClick: (contractNo: string) => void;
-}
 
 export function ReturnTable({
   items,
@@ -18,18 +9,18 @@ export function ReturnTable({
   sortDirection,
   onSort,
   onActionClick,
-}: TableProps) {
+}) {
   const columns = [
-    { key: "application_no" as keyof ApprovalReturnRequest, label: "No. Aplikasi" },
-    { key: "application_date" as keyof ApprovalReturnRequest, label: "Tanggal Aplikasi" },
-    { key: "customer_name" as keyof ApprovalReturnRequest, label: "Nama Customer" },
-    { key: "return_request_form" as keyof ApprovalReturnRequest, label: "Process" },
-    { key: "return_request_process" as keyof ApprovalReturnRequest, label: "Request Return" },
+    { key: "application_no", label: "No. Aplikasi" },
+    { key: "application_date", label: "Tanggal Aplikasi" },
+    { key: "customer_name", label: "Nama Customer" },
+    { key: "return_request_form", label: "Process" },
+    { key: "return_request_process", label: "Request Return" },
   ];
 
-  const defaultSortColumn: keyof ApprovalReturnRequest = "application_no";
-  const [sortedItems, setSortedItems] = useState<ApprovalReturnRequest[]>([]);
-  const [currentSortColumn, setCurrentSortColumn] = useState<keyof ApprovalReturnRequest | null>("application_no");
+  const defaultSortColumn = "application_no";
+  const [sortedItems, setSortedItems] = useState([]);
+  const [currentSortColumn, setCurrentSortColumn] = useState("application_no");
   const [currentSortDirection, setCurrentSortDirection] = useState<"asc" | "desc">("asc")
 
   useEffect(() => {
@@ -47,7 +38,7 @@ export function ReturnTable({
     setSortedItems(sortedData);
   }, [items, currentSortColumn, currentSortDirection]);
 
-  const handleSort = (column: keyof ApprovalReturnRequest) => {
+  const handleSort = (column) => {
     setCurrentSortColumn(column);
     setCurrentSortDirection((prev) => (column === currentSortColumn && prev === "asc" ? "desc" : "asc"));
   };

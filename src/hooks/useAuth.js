@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react"
 
-interface AuthenticateUser{
-    nik: string,
-    branchCode: string
-}
-
 export function useAuth() {
     const [user, setUser] = useState<AuthenticateUser | null>(null);
     const [loading, setLoading] = useState(true);

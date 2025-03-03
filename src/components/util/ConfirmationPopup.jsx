@@ -1,14 +1,5 @@
 import { CheckCircle, X } from "lucide-react";
 
-interface ConfirmationPopupProps {
-    isOpen: boolean;
-    action: 'reject' | 'confirm' | null;
-    isSuccess: boolean | null;
-    successMessage: string;
-    onCancel: () => void;
-    onConfirm: () => void;
-}
-
 export function ConfirmationPopup({
     isOpen,
     action,
@@ -16,7 +7,7 @@ export function ConfirmationPopup({
     successMessage,
     onCancel,
     onConfirm,
-}: ConfirmationPopupProps) {
+}) {
     if (!isOpen) return null;
 
     return (

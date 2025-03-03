@@ -1,4 +1,6 @@
-export const ErrorMessage = ({message}:{message:string}) => {
+import React from "react";
+
+export const ErrorMessage = ({message}) => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div

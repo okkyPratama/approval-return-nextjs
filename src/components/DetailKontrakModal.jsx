@@ -2,12 +2,12 @@
 
 import { useEffect } from "react";
 import { X } from "lucide-react";
-import { DetailKontrakProps } from "@/types/detailContract";
 import { useDetailContract } from "@/hooks/useDetailContract";
 import { useModal } from "@/hooks/useModal";
 import { FormField } from "./Form/FormField";
 import { formatDate } from "@/helper/date";
 import { ConfirmationPopup } from "./util/ConfirmationPopup";
+import React from "react";
 
 export default function DetailKontrakModal({
   isOpen,
@@ -15,7 +15,7 @@ export default function DetailKontrakModal({
   contractNo,
   onSuccessfulAction,
   setIsConfirmationLoading,
-}: DetailKontrakProps) {
+}) {
   const {
     detailData,
     isLoading: detailLoading,

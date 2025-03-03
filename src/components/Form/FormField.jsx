@@ -1,11 +1,4 @@
-interface FormFieldProps {
-  label: string;
-  value: string;
-  fullWidth?: boolean;
-  multiline?: boolean;
-  rows?: number;
-  isBold?: boolean;
-}
+import React from "react";
 
 export function FormField({
   label,
@@ -14,7 +7,7 @@ export function FormField({
   multiline = false,
   rows = 2,
   isBold = false,
-}: FormFieldProps) {
+}) {
   const textBold = isBold ? "font-semibold" : "font-normal";
 
   return (

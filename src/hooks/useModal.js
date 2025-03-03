@@ -1,16 +1,14 @@
 import { useCallback, useState } from "react";
 import { useAuth } from "./useAuth";
 import { approvalReturnApi } from "@/service/api";
-import { DetailContractData } from "@/types/detailContract";
 
-type ActionType = 'reject' | 'confirm' | null;
 
 export function useModal(
-  contractNo: string,
-  onClose: () => void,
-  onSuccessfulAction: () => void,
-  setIsConfirmationLoading: (loading: boolean) => void,
-  detailData?: DetailContractData | null
+  contractNo,
+  onClose,
+  onSuccessfulAction,
+  setIsConfirmationLoading,
+  detailData
 ) {
   const { user } = useAuth();
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -19,7 +17,7 @@ export function useModal(
   const [successMessage, setSuccessMessage] = useState("");
   const [shouldCloseMainModal, setShouldCloseMainModal] = useState(false);
 
-  const handleActionClick = useCallback((action: ActionType) => {
+  const handleActionClick = useCallback((action) => {
     if (!detailData?.return_request_reason) {
       setSuccessMessage('Reason Return Tidak Boleh Kosong!');
       setIsSuccess(false);

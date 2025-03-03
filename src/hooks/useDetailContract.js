@@ -1,9 +1,8 @@
 import { approvalReturnApi } from "@/service/api";
-import { DetailContractData } from "@/types/detailContract";
 import { useCallback, useState } from "react";
 
-export function useDetailContract(contractNo: string) {
-    const [detailData, setDetailData] = useState<DetailContractData | null>(null);
+export function useDetailContract(contractNo) {
+    const [detailData, setDetailData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
   

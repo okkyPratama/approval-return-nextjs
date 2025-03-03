@@ -1,14 +1,14 @@
 import { useCallback, useMemo, useState } from "react";
 
-export function useTableSort<T>(
-    data: T[], 
-    initialSortColumn: keyof T | null = null, 
-    initialDirection: 'asc' | 'desc' = 'asc'
+export function useTableSort(
+    data, 
+    initialSortColumn, 
+    initialDirection
   ) {
-    const [sortColumn, setSortColumn] = useState<keyof T | null>(initialSortColumn);
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>(initialDirection);
+    const [sortColumn, setSortColumn] = useState(initialSortColumn);
+    const [sortDirection, setSortDirection] = useState(initialDirection);
   
-    const handleSort = useCallback((column: keyof T) => {
+    const handleSort = useCallback((column) => {
       if (sortColumn === column) {
         setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
       } else {

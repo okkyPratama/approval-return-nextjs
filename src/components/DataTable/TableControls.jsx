@@ -1,17 +1,12 @@
-interface TableControlsProps {
-  itemsPerPage: number;
-  onItemsPerPageChange: (value: number) => void;
-  searchTerm: string;
-  onSearchChange: (value: string) => void;
-}
+import React from "react";
 
 export function TableControls({ itemsPerPage,
     onItemsPerPageChange,
     searchTerm,
     onSearchChange,
-}: TableControlsProps) {
+}) {
 
-    const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleItemsPerPageChange = (e) => {
       onItemsPerPageChange(Number(e.target.value));
     };
 

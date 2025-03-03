@@ -2,7 +2,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import DetailKontrakModal from "./DetailKontrakModal";
 import { useAuth } from "@/hooks/useAuth";
-import { ApprovalReturnRequest } from "@/types/approvalReturn";
 import { approvalReturnApi } from "@/service/api";
 import { useTableSort } from "@/hooks/useTableSort";
 import { usePagination } from "@/hooks/usePagination";
@@ -12,18 +11,19 @@ import { TableFooter } from "./DataTable/TableFooter";
 import { LoadingSpinner } from "./util/LoadingSpinner";
 import { ErrorMessage } from "./util/ErrorMessage";
 import { formatDate } from "@/helper/date";
+import React from "react";
 
 export default function ApprovalReturn() {
   const { user, loading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [isConfirmationLoading, setIsConfirmationLoading] = useState(false);
-  const [returnData, setReturnData] = useState<ApprovalReturnRequest[]>([]);
+  const [returnData, setReturnData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [error, setError] = useState<string | null>(null);
   const [modalState, setModalState] = useState({
-    isOpen: false,
-    contractNo: null as string | null,
+    isOpen,
+    contractNo,
   });
 
   const fetchData = useCallback(async () => {
@@ -69,7 +69,7 @@ export default function ApprovalReturn() {
   const { sortedData, sortColumn, sortDirection, handleSort } = useTableSort(filteredData);
   const { currentItems, currentPage, totalPages, handlePageChange } = usePagination(sortedData, itemsPerPage);
 
-  const handleModalOpen = (contractNo: string) => {
+  const handleModalOpen = (contractNo) => {
     setModalState({ isOpen: true, contractNo });
   };
 

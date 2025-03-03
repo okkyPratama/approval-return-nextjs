@@ -1,12 +1,5 @@
+import React from "react";
 import { Pagination } from "./Pagination";
-
-interface TableFooterProps {
-  currentPage: number;
-  totalPages: number;
-  itemsPerPage: number;
-  totalItems: number;
-  onPageChange: (page: number) => void;
-}
 
 export function TableFooter({
     currentPage,
@@ -14,7 +7,7 @@ export function TableFooter({
     itemsPerPage,
     totalItems,
     onPageChange,
-  }: TableFooterProps) {
+  }) {
     const indexOfFirstItem = (currentPage - 1) * itemsPerPage + 1;
     const indexOfLastItem = Math.min(currentPage * itemsPerPage, totalItems);
   

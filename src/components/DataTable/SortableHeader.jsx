@@ -1,20 +1,14 @@
 import { ArrowDown, ArrowUp } from "lucide-react";
+import React from "react";
 
-interface SortableHeaderProps<T> {
-  column: keyof T;
-  label: string;
-  sortColumn: keyof T | null;
-  sortDirection: "asc" | "desc";
-  onSort: (column: keyof T) => void;
-}
 
-export function SortableHeader<T>({
+export function SortableHeader({
   column,
   label,
   sortColumn,
   sortDirection,
   onSort,
-}: SortableHeaderProps<T>) {
+}) {
   const isSorted = sortColumn === column;
 
   return (
