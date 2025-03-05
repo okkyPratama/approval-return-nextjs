@@ -1,10 +1,10 @@
-import { approvalReturnApi } from "@/service/api";
 import { useCallback, useState } from "react";
+import { approvalReturnApi } from "../service/api";
 
 export function useDetailContract(contractNo) {
     const [detailData, setDetailData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState(null);
   
     const fetchDetailData = useCallback(async () => {
       setIsLoading(true);

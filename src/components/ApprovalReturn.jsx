@@ -1,17 +1,17 @@
 "use client";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import DetailKontrakModal from "./DetailKontrakModal";
-import { useAuth } from "@/hooks/useAuth";
-import { approvalReturnApi } from "@/service/api";
-import { useTableSort } from "@/hooks/useTableSort";
-import { usePagination } from "@/hooks/usePagination";
 import { TableControls } from "./DataTable/TableControls";
 import { ReturnTable } from "./DataTable/Table";
 import { TableFooter } from "./DataTable/TableFooter";
 import { LoadingSpinner } from "./util/LoadingSpinner";
 import { ErrorMessage } from "./util/ErrorMessage";
-import { formatDate } from "@/helper/date";
 import React from "react";
+import { useAuth } from "../hooks/useAuth";
+import { useTableSort } from "../hooks/useTableSort";
+import { usePagination } from "../hooks/usePagination";
+import { approvalReturnApi } from "../service/api";
+import { formatDate } from "../helper/date";
 
 export default function ApprovalReturn() {
   const { user, loading: authLoading } = useAuth();
@@ -20,10 +20,10 @@ export default function ApprovalReturn() {
   const [returnData, setReturnData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
   const [modalState, setModalState] = useState({
-    isOpen,
-    contractNo,
+    isOpen: false,
+    contractNo: null,
   });
 
   const fetchData = useCallback(async () => {

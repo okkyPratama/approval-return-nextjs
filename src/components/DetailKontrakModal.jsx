@@ -2,12 +2,13 @@
 
 import { useEffect } from "react";
 import { X } from "lucide-react";
-import { useDetailContract } from "@/hooks/useDetailContract";
-import { useModal } from "@/hooks/useModal";
 import { FormField } from "./Form/FormField";
-import { formatDate } from "@/helper/date";
 import { ConfirmationPopup } from "./util/ConfirmationPopup";
 import React from "react";
+import { useDetailContract } from "../hooks/useDetailContract";
+import { useModal } from "../hooks/useModal";
+import { formatDate } from "../helper/date";
+
 
 export default function DetailKontrakModal({
   isOpen,

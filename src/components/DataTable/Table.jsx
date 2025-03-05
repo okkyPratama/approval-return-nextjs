@@ -1,7 +1,9 @@
 import { SortableHeader } from "./SortableHeader";
 import { Edit2 } from "lucide-react";
-import { formatDate } from "@/helper/date";
 import { useEffect, useState } from "react";
+import { formatDate } from "../../helper/date";
+
+
 
 export function ReturnTable({
   items,
@@ -21,7 +23,7 @@ export function ReturnTable({
   const defaultSortColumn = "application_no";
   const [sortedItems, setSortedItems] = useState([]);
   const [currentSortColumn, setCurrentSortColumn] = useState("application_no");
-  const [currentSortDirection, setCurrentSortDirection] = useState<"asc" | "desc">("asc")
+  const [currentSortDirection, setCurrentSortDirection] = useState("asc")
 
   useEffect(() => {
     const activeSortColumn = currentSortColumn ?? defaultSortColumn;

@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useAuth } from "./useAuth";
-import { approvalReturnApi } from "@/service/api";
+import { approvalReturnApi } from "../service/api";
 
 
 export function useModal(
@@ -12,8 +12,8 @@ export function useModal(
 ) {
   const { user } = useAuth();
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationAction, setConfirmationAction] = useState<ActionType>(null);
-  const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
+  const [confirmationAction, setConfirmationAction] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [shouldCloseMainModal, setShouldCloseMainModal] = useState(false);
 
