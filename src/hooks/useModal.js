@@ -96,7 +96,7 @@ export function useModal(
       }
     } catch (error) {
       console.error("Error during API call:", error);
-      setSuccessMessage('Terjadi Kesalahan, Silahkan Hubungi IT');
+      setSuccessMessage(error.message || 'Terjadi Kesalahan, Silahkan Hubungi IT');
       setIsSuccess(false);
       setShouldCloseMainModal(true);
       
@@ -105,7 +105,7 @@ export function useModal(
         setIsSuccess(null);
         await onSuccessfulAction();
         onClose();
-      }, 1500);
+      }, 2000);
     } finally {
       setIsConfirmationLoading(false);
     }
