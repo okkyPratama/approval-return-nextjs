@@ -59,7 +59,6 @@ export function useModal(
       if (!response.data || Object.keys(response.data).length === 0) {
         throw new Error('Data Tidak Ditemukan, Silahkan Hubungi IT');
       }
-
       if (response.data.status !== true) {
         const returnType = detailData.return_request_process === 'RFDE' ? 'FDE' : 'RTRE';
         const actionType = confirmationAction === "confirm" ? "Confirm" : "Reject";
