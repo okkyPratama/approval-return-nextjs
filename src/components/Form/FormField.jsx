@@ -6,14 +6,12 @@ export function FormField({
   fullWidth = false,
   multiline = false,
   rows = 2,
-  isBold = false,
 }) {
-  const textBold = isBold ? "font-semibold" : "font-normal";
 
   return (
     <div className="flex w-full items-start py-0.5">
       <label
-        className={`text-xs text-gray-700 ${textBold} w-[140px] pt-1`}
+        className={`text-xs text-gray-700 font-normal w-[140px] pt-1`}
       >
         {label}
       </label>

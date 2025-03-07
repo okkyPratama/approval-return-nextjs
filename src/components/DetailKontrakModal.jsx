@@ -81,7 +81,7 @@ export default function DetailKontrakModal({
               <FormField 
                 label="Tanggal Aplikasi:" 
                 value={formatDate(detailData.application_date)}
-                isBold 
+                 
               />
               <FormField label="Nama Customer:" value={detailData.customer_name} />
               <FormField 
@@ -92,14 +92,14 @@ export default function DetailKontrakModal({
                 rows={2}
               />
               <FormField label="Tipe Nasabah:" value={detailData.customer_type} />
-              <FormField label="Outlet:" value={detailData.outlet_desc} isBold />
+              <FormField label="Outlet:" value={detailData.outlet_desc}  />
               <FormField label="Nama Dealer:" value={detailData.supplier_desc} />
               <FormField label="Merk Objek:" value={detailData.brand_desc} />
               <FormField label="Model Objek:" value={detailData.model_desc} />
               <FormField 
                 label="Request Return:" 
                 value={detailData.return_request_process}
-                isBold 
+                 
               />
               <FormField 
                 label="Reason:" 
@@ -107,7 +107,7 @@ export default function DetailKontrakModal({
                 fullWidth 
                 multiline 
                 rows={2}
-                isBold
+                
               />
             </div>
           ) : (
