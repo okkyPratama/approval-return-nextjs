@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_APPROVAL_RETURN_API_URL;
+const LOCAL_API_URL = process.env.NEXT_PUBLIC_LOCAL_URL;
 
 export const approvalReturnApi = {
     getApprovalReturn: async (branchCode) => {
@@ -16,7 +17,9 @@ export const approvalReturnApi = {
         );
         return response.data.data[0];
       },
-      
+      checkFlagReturnRequest: async(params) => {
+        return axios.post(`${LOCAL_API_URL}/checkFlagReturn`,params);
+      },
       confirmApproval: async (params) => {
         return axios.post(`${API_BASE_URL}/confirmApproval`, params);
       },
